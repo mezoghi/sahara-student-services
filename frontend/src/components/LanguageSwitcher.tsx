@@ -13,12 +13,12 @@ export default function LanguageSwitcher() {
 
   return (
     <button
-      className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 text-white"
+      className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 border border-accent-400 shadow-md hover:shadow-lg transition-all duration-300 text-white font-medium"
       onClick={switchLanguage}
       aria-label="Switch Language"
     >
       <LanguageIcon className="h-5 w-5" />
-      <span className="font-medium">{locale === 'en' ? 'العربية' : 'English'}</span>
+      <span className="font-semibold">{locale === 'en' ? 'العربية' : 'English'}</span>
     </button>
   );
 }

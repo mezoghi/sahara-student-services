@@ -6,18 +6,31 @@ import { useAuth } from '@/lib/context/AuthContext';
 import { useLanguage } from '@/lib/context/LanguageContext';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import api from '@/lib/api';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
-  DocumentTextIcon, 
-  ClockIcon, 
-  CheckCircleIcon, 
-  XCircleIcon,
-  PlusIcon,
-  ArrowRightIcon,
-  AcademicCapIcon,
-  ChartBarIcon,
-  BellIcon,
-  CalendarIcon
-} from '@heroicons/react/24/outline';
+  FileText,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Plus,
+  ArrowRight,
+  GraduationCap,
+  TrendingUp,
+  Calendar,
+  Bell,
+  BookMarked,
+  User,
+  Upload,
+  AlertCircle,
+  MapPin,
+  Eye
+} from 'lucide-react';
 
 interface Application {
   id: string;
@@ -28,6 +41,7 @@ interface Application {
     name: string;
     school: {
       name: string;
+      location: string;
     };
   };
 }
@@ -58,201 +72,321 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <DashboardLayout>
-        <div className="flex items-center justify-center py-20">
-          <div className="text-center">
-            <div className="inline-block relative">
-              <div className="animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-primary"></div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <AcademicCapIcon className="h-8 w-8 text-primary" />
-              </div>
-            </div>
-            <p className="mt-4 text-gray-600 font-medium">{t.common.loading}</p>
+        <div className="space-y-6">
+          <Skeleton className="h-12 w-64" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, i) => (
+              <Card key={i}>
+                <CardHeader>
+                  <Skeleton className="h-4 w-24 mb-2" />
+                  <Skeleton className="h-8 w-16" />
+                </CardHeader>
+              </Card>
+            ))}
           </div>
         </div>
       </DashboardLayout>
     );
   }
 
-  const getStatusColor = (status: string) => {
-    const colors: Record<string, string> = {
-      DRAFT: 'bg-gray-100 text-gray-800',
-      SUBMITTED: 'bg-blue-100 text-blue-800',
-      UNDER_REVIEW: 'bg-yellow-100 text-yellow-800',
-      ACCEPTED: 'bg-green-100 text-green-800',
-      REJECTED: 'bg-red-100 text-red-800',
-      WAITLISTED: 'bg-purple-100 text-purple-800',
+  const getStatusBadge = (status: string) => {
+    const variants: Record<string, 'default' | 'secondary' | 'destructive' | 'outline' | 'success' | 'warning'> = {
+      DRAFT: 'outline',
+      SUBMITTED: 'default',
+      UNDER_REVIEW: 'secondary',
+      ACCEPTED: 'success',
+      REJECTED: 'destructive',
+      WAITLISTED: 'warning',
     };
-    return colors[status] || 'bg-gray-100 text-gray-800';
+    return variants[status] || 'outline';
+  };
+
+  const getStatusIcon = (status: string) => {
+    const icons: Record<string, React.ReactNode> = {
+      DRAFT: <FileText className="h-4 w-4" />,
+      SUBMITTED: <Upload className="h-4 w-4" />,
+      UNDER_REVIEW: <Clock className="h-4 w-4" />,
+      ACCEPTED: <CheckCircle className="h-4 w-4" />,
+      REJECTED: <XCircle className="h-4 w-4" />,
+      WAITLISTED: <AlertCircle className="h-4 w-4" />,
+    };
+    return icons[status] || <FileText className="h-4 w-4" />;
+  };
+
+  const profileCompletion = 75;
+  const stats = {
+    total: applications.length,
+    submitted: applications.filter(a => a.status !== 'DRAFT').length,
+    underReview: applications.filter(a => a.status === 'UNDER_REVIEW').length,
+    accepted: applications.filter(a => a.status === 'ACCEPTED').length,
   };
 
   return (
     <DashboardLayout>
-          {/* Header Section */}
-          <div className="mb-8 sm:mb-12">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div className="animate-fade-in-up">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-12 h-12 bg-gradient-to-r from-primary to-primary-700 rounded-xl flex items-center justify-center shadow-soft">
-                    <AcademicCapIcon className="h-7 w-7 text-white" />
-                  </div>
-                  <div>
-                    <h1 className="text-3xl sm:text-4xl font-bold text-primary">
-                      {t.dashboard.welcome}, {user?.firstName}! 👋
-                    </h1>
-                  </div>
-                </div>
-                <p className="text-gray-600 ml-15">{t.dashboard.subtitle}</p>
-              </div>
-              <div className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-                <Link
-                  href="/courses"
-                  className="group inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-accent to-accent-600 text-white rounded-xl font-semibold shadow-glow-accent hover:shadow-glow-accent/80 transform hover:-translate-y-0.5 transition-all duration-400"
-                >
-                  <PlusIcon className="h-5 w-5" />
-                  <span>{t.dashboard.newApplication}</span>
-                </Link>
-              </div>
-            </div>
+      {/* Header */}
+      <div className="mb-10">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div>
+            <h1 className="text-4xl lg:text-5xl font-bold text-neutral-900 mb-3 leading-tight">
+              Welcome back, <span className="text-primary">{user?.firstName}</span>! 👋
+            </h1>
+            <p className="text-lg text-neutral-600 leading-relaxed">Track your applications and manage your profile</p>
           </div>
+          <Link href="/courses">
+            <Button size="lg" variant="gradient" className="gap-2 shadow-lg hover:shadow-xl">
+              <Plus className="h-5 w-5" />
+              New Application
+            </Button>
+          </Link>
+        </div>
+      </div>
 
-          {/* Quick Stats */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-12">
-            {[
-              {
-                label: t.dashboard.stats.totalApplications,
-                value: applications.length,
-                icon: DocumentTextIcon,
-                color: 'from-blue-500 to-blue-600',
-                bgColor: 'bg-blue-50',
-                textColor: 'text-blue-600'
-              },
-              {
-                label: t.dashboard.stats.submitted,
-                value: applications.filter(a => a.status !== 'DRAFT').length,
-                icon: CheckCircleIcon,
-                color: 'from-green-500 to-green-600',
-                bgColor: 'bg-green-50',
-                textColor: 'text-green-600'
-              },
-              {
-                label: t.dashboard.stats.underReview,
-                value: applications.filter(a => a.status === 'UNDER_REVIEW').length,
-                icon: ClockIcon,
-                color: 'from-yellow-500 to-yellow-600',
-                bgColor: 'bg-yellow-50',
-                textColor: 'text-yellow-600'
-              },
-              {
-                label: t.dashboard.stats.accepted,
-                value: applications.filter(a => a.status === 'ACCEPTED').length,
-                icon: AcademicCapIcon,
-                color: 'from-accent to-accent-600',
-                bgColor: 'bg-red-50',
-                textColor: 'text-accent'
-              },
-            ].map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <div
-                  key={index}
-                  className="group bg-white rounded-2xl p-6 shadow-soft hover:shadow-soft-lg transition-all duration-400 transform hover:-translate-y-1 animate-fade-in-up"
-                  style={{ animationDelay: `${0.1 + index * 0.05}s` }}
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className={`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-400`}>
-                      <Icon className={`h-6 w-6 ${stat.textColor}`} />
-                    </div>
-                    <ChartBarIcon className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <div>
-                    <p className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</p>
-                    <p className="text-sm text-gray-600 font-medium">{stat.label}</p>
-                  </div>
+      <div className="grid lg:grid-cols-3 gap-6">
+        {/* Main Content */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card className="group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border-neutral-200">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                <CardTitle className="text-sm font-semibold text-neutral-600">
+                  Total Applications
+                </CardTitle>
+                <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                  <FileText className="h-4 w-4 text-primary" />
                 </div>
-              );
-            })}
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-neutral-900 mb-1">{stats.total}</div>
+                <p className="text-sm text-neutral-500">All time</p>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border-neutral-200">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                <CardTitle className="text-sm font-semibold text-neutral-600">
+                  Submitted
+                </CardTitle>
+                <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                  <Upload className="h-4 w-4 text-primary" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-neutral-900 mb-1">{stats.submitted}</div>
+                <p className="text-sm text-neutral-500">In progress</p>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border-neutral-200">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                <CardTitle className="text-sm font-semibold text-neutral-600">
+                  Under Review
+                </CardTitle>
+                <div className="p-2 rounded-lg bg-warning/10 group-hover:bg-warning/20 transition-colors">
+                  <Clock className="h-4 w-4 text-warning-600" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-neutral-900 mb-1">{stats.underReview}</div>
+                <p className="text-sm text-neutral-500">Pending</p>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border-neutral-200">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                <CardTitle className="text-sm font-semibold text-neutral-600">
+                  Accepted
+                </CardTitle>
+                <div className="p-2 rounded-lg bg-success/10 group-hover:bg-success/20 transition-colors">
+                  <CheckCircle className="h-4 w-4 text-success-600" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-neutral-900 mb-1">{stats.accepted}</div>
+                <p className="text-sm text-neutral-500">Success rate</p>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Applications List */}
-          <div className="bg-white rounded-3xl shadow-soft-lg p-6 sm:p-8 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-              <div>
-                <h2 className="text-2xl font-bold text-primary mb-1">{t.dashboard.myApplications.title}</h2>
-                <p className="text-gray-600 text-sm">{t.dashboard.myApplications.subtitle}</p>
-              </div>
-            </div>
-
-            {applications.length === 0 ? (
-              <div className="text-center py-16">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full mb-6">
-                  <DocumentTextIcon className="h-10 w-10 text-gray-400" />
+          <Card className="border-neutral-200 hover:shadow-lg transition-all duration-300">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-2xl text-neutral-900">My Applications</CardTitle>
+                  <CardDescription className="text-neutral-600 mt-1">Track and manage your course applications</CardDescription>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{t.dashboard.myApplications.noApplications}</h3>
-                <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                  {t.dashboard.myApplications.noApplicationsDesc}
-                </p>
-                <Link
-                  href="/courses"
-                  className="inline-flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-primary to-primary-700 text-white rounded-xl font-semibold shadow-soft-lg hover:shadow-soft-xl transform hover:-translate-y-0.5 transition-all duration-400"
-                >
-                  <AcademicCapIcon className="h-5 w-5" />
-                  <span>{t.dashboard.myApplications.browseCourses}</span>
-                  <ArrowRightIcon className="h-5 w-5" />
-                </Link>
+                <Button variant="outline" size="sm" className="hover:bg-primary/5 hover:border-primary hover:text-primary transition-all">
+                  View All
+                </Button>
               </div>
-            ) : (
-              <div className="space-y-4">
-                {applications.map((app, index) => (
-                  <div
-                    key={app.id}
-                    className="group relative bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 rounded-2xl p-6 hover:border-primary/30 hover:shadow-soft-lg transition-all duration-400"
-                    style={{ animationDelay: `${0.4 + index * 0.05}s` }}
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-start space-x-3">
-                          <div className="w-12 h-12 bg-gradient-to-r from-primary to-primary-700 rounded-xl flex items-center justify-center flex-shrink-0 shadow-soft">
-                            <AcademicCapIcon className="h-6 w-6 text-white" />
-                          </div>
-                          <div>
-                            <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-primary transition-colors">
-                              {app.course.name}
-                            </h3>
-                            <p className="text-gray-600 text-sm font-medium">{app.course.school.name}</p>
-                          </div>
-                        </div>
-                      </div>
-                      <span className={`inline-flex items-center px-4 py-2 rounded-xl text-sm font-semibold ${getStatusColor(app.status)} shadow-inner-soft`}>
-                        {app.status.replace('_', ' ')}
-                      </span>
-                    </div>
-                    
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-4 border-t border-gray-100">
-                      <div className="flex items-center space-x-4 text-sm text-gray-500">
-                        <div className="flex items-center space-x-1">
-                          <CalendarIcon className="h-4 w-4" />
-                          <span>{t.dashboard.myApplications.created} {new Date(app.createdAt).toLocaleDateString()}</span>
-                        </div>
-                        {app.submittedAt && (
-                          <div className="flex items-center space-x-1">
-                            <CheckCircleIcon className="h-4 w-4 text-green-500" />
-                            <span>{t.dashboard.myApplications.submitted} {new Date(app.submittedAt).toLocaleDateString()}</span>
-                          </div>
-                        )}
-                      </div>
-                      <Link
-                        href={`/applications/${app.id}`}
-                        className="group/link inline-flex items-center space-x-2 text-accent font-semibold hover:text-accent-600 transition-colors"
-                      >
-                        <span>{t.dashboard.myApplications.viewDetails}</span>
-                        <ArrowRightIcon className="h-4 w-4 group-hover/link:translate-x-1 transition-transform" />
-                      </Link>
-                    </div>
+            </CardHeader>
+            <CardContent>
+              {applications.length === 0 ? (
+                <div className="text-center py-16">
+                  <div className="p-4 rounded-full bg-primary/10 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                    <GraduationCap className="h-10 w-10 text-primary" />
                   </div>
-                ))}
+                  <h3 className="text-xl font-semibold text-neutral-900 mb-3">No applications yet</h3>
+                  <p className="text-neutral-600 mb-8 max-w-md mx-auto leading-relaxed">
+                    Start your journey by applying to your dream course
+                  </p>
+                  <Link href="/courses">
+                    <Button variant="gradient" size="lg" className="shadow-lg hover:shadow-xl">
+                      <Plus className="h-5 w-5 mr-2" />
+                      Browse Courses
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {applications.slice(0, 5).map((application, index) => (
+                    <div key={application.id}>
+                      {index > 0 && <Separator className="my-4 bg-neutral-200" />}
+                      <div className="flex items-start justify-between gap-4 p-4 rounded-xl hover:bg-neutral-50 transition-colors">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-3">
+                            <Badge variant={getStatusBadge(application.status)} className="gap-1">
+                              {getStatusIcon(application.status)}
+                              {application.status.replace('_', ' ')}
+                            </Badge>
+                          </div>
+                          <h4 className="font-semibold text-neutral-900 mb-2 truncate text-lg leading-tight">
+                            {application.course.name}
+                          </h4>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-3 text-sm text-neutral-600">
+                            <div className="flex items-center gap-2">
+                              <GraduationCap className="h-4 w-4 text-primary" />
+                              <span className="truncate">{application.course.school.name}</span>
+                            </div>
+                            <span className="hidden sm:inline text-neutral-400">•</span>
+                            <div className="flex items-center gap-2">
+                              <Calendar className="h-4 w-4 text-primary" />
+                              <span>
+                                {new Date(application.createdAt).toLocaleDateString()}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <Link href={`/applications/${application.id}`}>
+                          <Button variant="outline" size="sm" className="gap-2 hover:bg-primary/5 hover:border-primary hover:text-primary transition-all">
+                            <Eye className="h-4 w-4" />
+                            View
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Sidebar */}
+        <div className="space-y-6">
+          {/* Profile Completion */}
+          <Card className="border-neutral-200 hover:shadow-lg transition-all duration-300">
+            <CardHeader>
+              <CardTitle className="text-lg text-neutral-900">Profile Completion</CardTitle>
+              <CardDescription className="text-neutral-600">Complete your profile to improve your chances</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-neutral-600 font-medium">Progress</span>
+                  <span className="font-semibold text-neutral-900">{profileCompletion}%</span>
+                </div>
+                <Progress value={profileCompletion} className="h-3 bg-neutral-200" />
               </div>
-            )}
-          </div>
+              <Link href="/profile">
+                <Button variant="outline" className="w-full gap-2 hover:bg-primary/5 hover:border-primary hover:text-primary transition-all">
+                  <User className="h-4 w-4" />
+                  Complete Profile
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Quick Actions */}
+          <Card className="border-neutral-200 hover:shadow-lg transition-all duration-300">
+            <CardHeader>
+              <CardTitle className="text-lg text-neutral-900">Quick Actions</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Link href="/courses">
+                <Button variant="outline" className="w-full justify-start gap-3 hover:bg-primary/5 hover:border-primary hover:text-primary transition-all">
+                  <BookMarked className="h-4 w-4" />
+                  Browse Courses
+                </Button>
+              </Link>
+              <Link href="/applications">
+                <Button variant="outline" className="w-full justify-start gap-3 hover:bg-primary/5 hover:border-primary hover:text-primary transition-all">
+                  <FileText className="h-4 w-4" />
+                  My Applications
+                </Button>
+              </Link>
+              <Link href="/documents">
+                <Button variant="outline" className="w-full justify-start gap-3 hover:bg-primary/5 hover:border-primary hover:text-primary transition-all">
+                  <Upload className="h-4 w-4" />
+                  Upload Documents
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Upcoming Deadlines */}
+          <Card className="border-neutral-200 hover:shadow-lg transition-all duration-300">
+            <CardHeader>
+              <CardTitle className="text-lg text-neutral-900">Upcoming Deadlines</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {applications
+                  .filter(a => a.status === 'DRAFT' || a.status === 'UNDER_REVIEW')
+                  .slice(0, 3)
+                  .map((app) => (
+                    <div key={app.id} className="flex items-start gap-3 p-3 rounded-xl hover:bg-neutral-50 transition-colors">
+                      <div className="p-2 rounded-lg bg-primary/10">
+                        <Calendar className="h-4 w-4 text-primary" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-neutral-900 truncate">{app.course.name}</p>
+                        <p className="text-xs text-neutral-600 mt-1">
+                          {app.status === 'DRAFT' ? 'Complete application' : 'Awaiting response'}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                {applications.filter(a => a.status === 'DRAFT' || a.status === 'UNDER_REVIEW').length === 0 && (
+                  <div className="text-center py-8">
+                    <Calendar className="h-8 w-8 text-neutral-400 mx-auto mb-3" />
+                    <p className="text-sm text-neutral-600">No upcoming deadlines</p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Help & Support */}
+          <Card className="border-neutral-200 hover:shadow-lg transition-all duration-300">
+            <CardHeader>
+              <CardTitle className="text-lg text-neutral-900">Need Help?</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Alert className="border-neutral-200 bg-neutral-50">
+                <AlertCircle className="h-4 w-4 text-primary" />
+                <AlertDescription className="text-sm text-neutral-700">
+                  Our counselors are here to help you with your application process.
+                </AlertDescription>
+              </Alert>
+              <Button variant="accent" className="w-full gap-2 shadow-md hover:shadow-lg">
+                <Bell className="h-4 w-4" />
+                Contact Support
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </DashboardLayout>
   );
 }

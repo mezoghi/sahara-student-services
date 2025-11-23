@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { PrismaClient, ApplicationStatus } from '@prisma/client';
+import { PrismaClient, ApplicationStatus, Prisma, UserRole } from '@prisma/client';
 import { AuthRequest } from '../middleware/auth.middleware';
 import { sendEmail } from '../utils/email.util';
 import { getSignedUrl } from '../utils/s3.util';
@@ -259,15 +259,15 @@ export const getAllUsers = async (req: AuthRequest, res: Response) => {
     const { role, search, status, page = '1', limit = '20' } = req.query;
     const skip = (parseInt(page as string) - 1) * parseInt(limit as string);
 
-    const where = {
-      ...(role && { role: role as string }),
+    const where: Prisma.UserWhereInput = {
+      ...(role && { role: role as UserRole }),
       ...(status && { isActive: status === 'active' }),
       ...(search && {
         OR: [
-          { email: { contains: search as string, mode: 'insensitive' } },
-          { firstName: { contains: search as string, mode: 'insensitive' } },
-          { lastName: { contains: search as string, mode: 'insensitive' } },
-          { phone: { contains: search as string, mode: 'insensitive' } },
+          { email: { contains: search as string, mode: Prisma.QueryMode.insensitive } },
+          { firstName: { contains: search as string, mode: Prisma.QueryMode.insensitive } },
+          { lastName: { contains: search as string, mode: Prisma.QueryMode.insensitive } },
+          { phone: { contains: search as string, mode: Prisma.QueryMode.insensitive } },
         ],
       }),
     };
@@ -298,7 +298,7 @@ export const getAllUsers = async (req: AuthRequest, res: Response) => {
     // Add application count to each user
     const usersWithCounts = users.map(user => ({
       ...user,
-      applications: user._count.applications,
+      applications: user._count?.applications || 0,
       status: user.isActive ? 'active' : 'inactive'
     }));
 

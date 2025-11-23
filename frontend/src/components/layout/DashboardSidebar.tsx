@@ -51,14 +51,14 @@ export default function DashboardSidebar() {
   ];
 
   const adminLinks: SidebarLink[] = [
-    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-    { name: 'Applications', href: '/dashboard/applications', icon: ClipboardDocumentListIcon, badge: 12 },
-    { name: 'Students', href: '/dashboard/students', icon: UsersIcon },
-    { name: 'Universities', href: '/dashboard/universities', icon: BuildingOfficeIcon },
-    { name: 'Courses', href: '/dashboard/courses', icon: AcademicCapIcon },
-    { name: 'Analytics', href: '/dashboard/analytics', icon: ChartBarIcon },
-    { name: 'Messages', href: '/dashboard/messages', icon: ChatBubbleLeftRightIcon, badge: 8 },
-    { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon },
+    { name: 'Dashboard', href: '/admin/dashboard', icon: HomeIcon },
+    { name: 'Applications', href: '/admin/applications', icon: ClipboardDocumentListIcon, badge: 12 },
+    { name: 'Students', href: '/admin/students', icon: UsersIcon },
+    { name: 'Universities', href: '/admin/universities', icon: BuildingOfficeIcon },
+    { name: 'Courses', href: '/admin/courses', icon: AcademicCapIcon },
+    { name: 'Analytics', href: '/admin/analytics', icon: ChartBarIcon },
+    { name: 'Messages', href: '/admin/messages', icon: ChatBubbleLeftRightIcon, badge: 8 },
+    { name: 'Settings', href: '/admin/settings', icon: Cog6ToothIcon },
   ];
 
   const links = isAdmin ? adminLinks : studentLinks;
