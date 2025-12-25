@@ -1,0 +1,311 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "services": "Services",
+    "courses": "Courses",
+    "studyUK": "Study in UK",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "logout": "Logout"
+  },
+  "hero": {
+    "title": "Your Gateway to",
+    "titleHighlight": "World-Class Education",
+    "subtitle": "Expert guidance for studying in the UK and beyond. We make your educational dreams a reality.",
+    "ctaPrimary": "Start Your Journey",
+    "ctaSecondary": "Explore Programs",
+    "trustBadge": "Trusted by 1000+ Students Worldwide",
+    "scrollDown": "Scroll to explore"
+  },
+  "stats": {
+    "students": "Students Enrolled",
+    "universities": "Partner Universities",
+    "countries": "Countries",
+    "successRate": "Success Rate"
+  },
+  "features": {
+    "title": "Why Choose Us",
+    "subtitle": "Everything you need for a successful study abroad journey",
+    "expertGuidance": {
+      "title": "Expert Guidance",
+      "description": "Professional counselors with years of experience in international education"
+    },
+    "universityPartners": {
+      "title": "Top Universities",
+      "description": "Partnerships with leading institutions across the UK and beyond"
+    },
+    "visaSupport": {
+      "title": "Visa Support",
+      "description": "Complete assistance with visa applications and documentation"
+    },
+    "careerServices": {
+      "title": "Career Services",
+      "description": "Post-graduation support and career guidance for our students"
+    }
+  },
+  "destinations": {
+    "title": "Study Destinations",
+    "subtitle": "Explore world-class education opportunities",
+    "uk": {
+      "title": "Study in UK",
+      "description": "Home to prestigious universities like Oxford, Cambridge, and Imperial College",
+      "programs": "Programs Available",
+      "button": "Explore UK Programs"
+    },
+    "us": {
+      "title": "Study in USA",
+      "description": "Access top-ranked institutions and cutting-edge research facilities",
+      "programs": "Programs Available",
+      "button": "Explore US Programs"
+    }
+  },
+  "cta": {
+    "title": "Ready to Start Your Journey?",
+    "subtitle": "Join thousands of students who have achieved their dreams with our guidance",
+    "button": "Get Started Today"
+  },
+  "footer": {
+    "company": {
+      "title": "Sahara Student Services",
+      "description": "Your trusted partner in international education. We guide students to achieve their academic dreams worldwide."
+    },
+    "quickLinks": {
+      "title": "Quick Links",
+      "aboutUs": "About Us",
+      "services": "Our Services",
+      "courses": "Courses",
+      "contact": "Contact Us",
+      "faq": "FAQ",
+      "privacy": "Privacy Policy"
+    },
+    "studyDestinations": {
+      "title": "Study Destinations",
+      "uk": "United Kingdom",
+      "usa": "United States",
+      "canada": "Canada",
+      "australia": "Australia"
+    },
+    "contact": {
+      "title": "Contact Us",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address"
+    },
+    "copyright": "All rights reserved.",
+    "backToTop": "Back to top"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to continue your educational journey",
+      "email": "Email Address",
+      "password": "Password",
+      "forgotPassword": "Forgot Password?",
+      "button": "Sign In",
+      "noAccount": "Don't have an account?",
+      "registerLink": "Register here",
+      "demoCredentials": "Demo Credentials",
+      "admin": "Admin",
+      "student": "Student"
+    },
+    "register": {
+      "title": "Start Your Journey",
+      "subtitle": "Create your account and unlock world-class education opportunities",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "phoneOptional": "(Optional)",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "passwordStrength": "Password Strength:",
+      "weak": "Weak",
+      "fair": "Fair",
+      "good": "Good",
+      "strong": "Strong",
+      "passwordsMatch": "Passwords match",
+      "passwordsDontMatch": "Passwords don't match",
+      "button": "Create Account",
+      "creating": "Creating Account...",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Sign In Instead"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {name}! 👋",
+    "subtitle": "Track your applications and manage your educational journey",
+    "newApplication": "New Application",
+    "stats": {
+      "totalApplications": "Total Applications",
+      "submitted": "Submitted",
+      "underReview": "Under Review",
+      "accepted": "Accepted"
+    },
+    "myApplications": {
+      "title": "My Applications",
+      "subtitle": "Track and manage all your university applications",
+      "noApplications": "No Applications Yet",
+      "noApplicationsDesc": "Start your journey by browsing available courses and creating your first application",
+      "browseCourses": "Browse Courses",
+      "created": "Created:",
+      "submitted": "Submitted:",
+      "viewDetails": "View Details"
+    },
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "myApplications": "My Applications",
+      "browseCourses": "Browse Courses",
+      "documents": "Documents",
+      "messages": "Messages",
+      "appointments": "Appointments",
+      "notifications": "Notifications",
+      "support": "Help & Support",
+      "settings": "Settings",
+      "logout": "Logout",
+      "students": "Students",
+      "universities": "Universities",
+      "analytics": "Analytics",
+      "applications": "Applications",
+      "courses": "Courses",
+      "student": "Student",
+      "admin": "Admin"
+    }
+  },
+  "studyUK": {
+    "hero": {
+      "title": "Study in the United Kingdom",
+      "subtitle": "Home to world-renowned universities, cutting-edge research, and a rich cultural heritage. Start your journey to academic excellence in the UK.",
+      "browseCourses": "Browse UK Courses",
+      "getConsultation": "Get Free Consultation"
+    },
+    "stats": {
+      "universities": "Universities",
+      "students": "International Students",
+      "ranking": "Global Ranking",
+      "workVisa": "Post-Study Work"
+    },
+    "whyUK": {
+      "title": "Why Study in the UK?",
+      "subtitle": "The UK offers a unique blend of academic excellence, cultural diversity, and career opportunities"
+    },
+    "topUniversities": {
+      "title": "Top UK Universities",
+      "subtitle": "Study at world-leading institutions ranked among the best globally",
+      "programs": "Programs",
+      "view": "View"
+    },
+    "popularFields": {
+      "title": "Popular Study Fields",
+      "subtitle": "Explore diverse programs across various disciplines",
+      "courses": "Courses"
+    },
+    "requirements": {
+      "title": "Entry Requirements",
+      "subtitle": "Understanding what you need to study in the UK",
+      "academic": "Academic Qualifications",
+      "language": "English Language",
+      "additional": "Additional Requirements"
+    },
+    "cost": {
+      "title": "Cost of Study",
+      "subtitle": "Plan your budget for studying in the UK",
+      "tuition": "Tuition Fees",
+      "living": "Living Costs"
+    },
+    "process": {
+      "title": "Application Process",
+      "subtitle": "Your step-by-step guide to studying in the UK"
+    },
+    "cta": {
+      "title": "Ready to Start Your UK Journey?",
+      "subtitle": "Our expert counsellors are here to guide you through every step of the application process. Get personalized advice and support.",
+      "getStarted": "Get Started Today",
+      "browseCourses": "Browse Courses"
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "About Sahara Student Services",
+      "subtitle": "Empowering students worldwide to achieve their academic dreams through expert guidance, personalized support, and unwavering commitment to excellence.",
+      "startJourney": "Start Your Journey",
+      "ourServices": "Our Services"
+    },
+    "stats": {
+      "experience": "Years Experience",
+      "students": "Students Placed",
+      "universities": "Partner Universities",
+      "successRate": "Success Rate"
+    },
+    "story": {
+      "title": "Our Story"
+    },
+    "mission": {
+      "title": "Our Mission"
+    },
+    "vision": {
+      "title": "Our Vision"
+    },
+    "values": {
+      "title": "Our Core Values",
+      "subtitle": "The principles that guide everything we do"
+    },
+    "whyChoose": {
+      "title": "Why Choose Us?",
+      "subtitle": "What makes Sahara Student Services your ideal education partner"
+    },
+    "cta": {
+      "title": "Ready to Begin Your Journey?",
+      "subtitle": "Join thousands of successful students who have achieved their dreams with our guidance. Let's make your educational aspirations a reality.",
+      "getStarted": "Get Started Free",
+      "exploreServices": "Explore Services"
+    }
+  },
+  "services": {
+    "hero": {
+      "title": "Our Services",
+      "subtitle": "Comprehensive, personalized support for every step of your international education journey. From university selection to post-arrival assistance.",
+      "getStarted": "Get Started Free",
+      "browseCourses": "Browse Courses"
+    },
+    "main": {
+      "title": "Complete Support Services",
+      "subtitle": "Everything you need for a successful study abroad experience"
+    },
+    "process": {
+      "title": "How We Work",
+      "subtitle": "Our proven 6-step process to ensure your success"
+    },
+    "whyChoose": {
+      "title": "Why Choose Our Services?",
+      "subtitle": "What makes our services stand out from the rest"
+    },
+    "cta": {
+      "title": "Ready to Get Started?",
+      "subtitle": "Book your free consultation today and take the first step towards your international education journey. Our experts are ready to help you succeed.",
+      "bookConsultation": "Book Free Consultation",
+      "browseCourses": "Browse Courses"
+    }
+  }
+}
